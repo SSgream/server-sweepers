@@ -209,7 +209,7 @@ function dash(){
  const d=document.getElementById('dash');d.style.display='block';d.scrollTop=0;document.body.style.overflow='hidden';showTableau();
 }
 /* ---------- Tableau Public ---------- */
-const TABLEAU_URL=''; // isi dengan alamat dashboard Tableau Public, mis. https://public.tableau.com/views/NamaWorkbook/NamaDashboard
+const TABLEAU_URL='https://public.tableau.com:9443/views/ServerSweepers/Dashboard1'; // isi dengan alamat dashboard Tableau Public, mis. https://public.tableau.com/views/NamaWorkbook/NamaDashboard
 function showTableau(){
  if(!TABLEAU_URL)return;
  if(!document.getElementById('tbs')){const sc=document.createElement('script');sc.id='tbs';sc.type='module';sc.src='https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js';document.head.appendChild(sc)}
