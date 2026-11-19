@@ -25,7 +25,8 @@ button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
 #post{position:absolute;left:0;right:0;top:60%;display:none;gap:10px;justify-content:center;flex-wrap:wrap;padding:0 12px}
 #post button{min-width:150px;padding:10px 16px}
 #dash{display:none;position:fixed;inset:0;z-index:50;overflow:auto;background:var(--bg);padding:calc(16px + env(safe-area-inset-top,0px)) 12px calc(24px + env(safe-area-inset-bottom,0px))}
-#dash>*{max-width:960px;margin-left:auto;margin-right:auto}
+#dash>*{max-width:1200px;margin-left:auto;margin-right:auto}
+#tv{overflow:hidden}
 #dash h2{font-size:20px;margin:0 0 4px}
 #sum{margin:0 0 12px;font-size:14px;opacity:.85}
 .tiles,.grid{display:grid;gap:10px;margin-bottom:10px}
@@ -211,13 +212,16 @@ function showTableau(){
  const P={p_hasil:g.win?'Menang':'Kalah',p_durasi:Math.round(g.t),p_kutu:s.k.kutu,p_spam:s.k.spam,p_glitch:s.k.glitch,p_sapu:s.d.sapu,p_tameng:s.d.tameng,p_drone:s.d.drone,p_insight_musuh:s.kIns,p_insight_terpakai:s.spent,p_hp_server:L(2),p_hp_portal:L(3),p_insight:L(1)};
  const v=document.createElement('tableau-viz');
  v.setAttribute('src',TABLEAU_URL);v.setAttribute('hide-tabs','');v.setAttribute('toolbar','hidden');
- v.style.width='100%';v.style.height='880px';
+ v.style.width='1000px';v.style.height='930px';v.style.display='block';v.style.transformOrigin='top left';
  for(const k in P){const q=document.createElement('viz-parameter');q.setAttribute('name',k);q.setAttribute('value',P[k]);v.appendChild(q)}
  v.addEventListener('firstinteractive',()=>{document.getElementById('bi').style.display='none'});
- document.getElementById('tv').appendChild(v);
+ document.getElementById('tv').appendChild(v);fitTv();
 }
+/* Dashboard Tableau berukuran tetap 1000 px (+ toolbar), jadi diperbesar/diperkecil agar pas selebar pop-up */
+function fitTv(){const w=document.getElementById('tv'),v=w.firstElementChild;if(!v)return;const s=w.clientWidth/1000;v.style.transform='scale('+s+')';w.style.height=(930*s)+'px'}
+addEventListener('resize',fitTv);
 function closeDash(){document.getElementById('dash').style.display='none';document.body.style.overflow='';document.getElementById('post').style.display='flex'}
-function openDash(){document.getElementById('post').style.display='none';if(!g.shown){g.shown=1;dash();return}const d=document.getElementById('dash');d.style.display='block';d.scrollTop=0;document.body.style.overflow='hidden'}
+function openDash(){document.getElementById('post').style.display='none';if(!g.shown){g.shown=1;dash();return}const d=document.getElementById('dash');d.style.display='block';d.scrollTop=0;document.body.style.overflow='hidden';fitTv()}
 /* ---------- kontrol ---------- */
 const bar_=document.getElementById('bar'),btn={};
 function mk(id,html,cls,fn){const b=document.createElement('button');b.innerHTML=html;if(cls)b.className=cls;b.onclick=fn;bar_.appendChild(b);btn[id]=b}
