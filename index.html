@@ -50,6 +50,20 @@ textarea{width:100%;height:90px;font:12px monospace;background:var(--card);color
 <div id="stage"><canvas id="c" width="900" height="420"></canvas>
 <div id="post"><button class="sp" onclick="openDash()">Lihat dashboard hasil</button><button onclick="reset()">Main lagi (R)</button></div></div>
 <div id="bar"></div>
+<section id="dash" role="dialog" aria-modal="true" aria-label="Dashboard hasil permainan">
+<div class="row" style="justify-content:space-between;align-items:center;margin-bottom:6px"><h2 style="margin:0">Dashboard hasil permainan</h2><span class="row"><button onclick="reset()">Main lagi (R)</button><button onclick="closeDash()">Tutup ✕</button></span></div>
+<p id="sum"></p>
+<div id="tv"></div>
+<div id="bi">
+<div class="tiles" id="tiles"></div>
+<div class="grid">
+<div class="card"><h3>Kesehatan markas (%) per detik</h3><div id="c1"></div><div class="lg"><span><i style="background:#3b82f6"></i>Server kamu</span><span><i style="background:#ff5fa2"></i>Portal gangguan</span></div></div>
+<div class="card"><h3>Insight yang dimiliki per detik</h3><div id="c2"></div></div>
+<div class="card"><h3>Musuh dikalahkan per jenis</h3><div id="c3"></div></div>
+<div class="card"><h3>Robot dikerahkan per jenis</h3><div id="c4"></div></div>
+</div>
+</div>
+</section>
 </div>
 <script>
 const C=document.getElementById('c'),X=C.getContext('2d'),W=900,H=420,G=330,TL=100,CB0=600,BB0=550;
