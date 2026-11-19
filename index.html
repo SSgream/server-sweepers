@@ -51,7 +51,7 @@ textarea{width:100%;height:90px;font:12px monospace;background:var(--card);color
 <div id="post"><button class="sp" onclick="openDash()">Lihat dashboard hasil</button><button onclick="reset()">Main lagi (R)</button></div></div>
 <div id="bar"></div>
 <section id="dash" role="dialog" aria-modal="true" aria-label="Dashboard hasil permainan">
-<div class="row" style="justify-content:space-between;align-items:center;margin-bottom:6px"><h2 style="margin:0">Dashboard hasil permainan</h2><button onclick="closeDash()">Tutup ✕</button></div>
+<div class="row" style="justify-content:space-between;align-items:center;margin-bottom:6px"><h2 style="margin:0">Dashboard hasil permainan</h2><span class="row"><button onclick="reset()">Main lagi (R)</button><button onclick="closeDash()">Tutup ✕</button></span></div>
 <p id="sum"></p>
 <div id="tv"></div>
 <div id="bi">
@@ -63,10 +63,6 @@ textarea{width:100%;height:90px;font:12px monospace;background:var(--card);color
 <div class="card"><h3>Robot dikerahkan per jenis</h3><div id="c4"></div></div>
 </div>
 </div>
-<div class="card"><h3>Data mentah untuk Tableau</h3>
-<div class="row"><button id="b1">Salin timeline.csv</button><button id="b2">Salin kejadian.csv</button><button onclick="reset()">Main lagi (R)</button></div>
-<textarea id="csv" readonly aria-label="Data CSV"></textarea>
-<p class="s" style="text-align:left;margin:6px 0 0">Tempel hasil salinan ke Notepad, simpan sebagai .csv, lalu buka di Tableau Public lewat Connect &gt; Text file.</p></div>
 </section>
 </div>
 <script>
@@ -81,6 +77,10 @@ const E={
  glitch:{n:'Glitch',hp:170,d:12,r:28,s:34,cd:1,col:'#c084fc',z:19,rw:30}};
 const SP={bersih:{n:'Sapu Bersih',c:120,k:'Z'},turbo:{n:'Turbo',c:150,k:'X'}};
 const rack=Array.from({length:14},(_,i)=>({x:i*68+8,h:70+((i*47)%130)}));
+/* Latar game: kalau file gambar ada di folder yang sama, dipakai sebagai latar. Kalau tidak ada, dipakai latar bawaan. */
+const BG_URL='game-bg.png';
+const BG=new Image();let bgOK=false;
+BG.onload=()=>{bgOK=true};BG.onerror=()=>{bgOK=false};BG.src=BG_URL;
 let g;
 function reset(){
  g={ins:160,cb:CB0,bb:BB0,u:[],fx:[],t:0,sp:5,wv:25,buff:0,over:0,lt:0,log:[],ev:[],
@@ -149,12 +149,14 @@ function pbar(x,y,w,v,m,col,lab,right){
  X.fillStyle='#e3ecff';X.font='bold 13px sans-serif';X.textAlign=right?'right':'left';X.fillText(lab+' '+Math.max(0,Math.ceil(v)),right?x+w:x,y-6);
 }
 function draw(){
+if(bgOK){X.drawImage(BG,0,0,W,H)}else{
  const gr=X.createLinearGradient(0,0,0,H);gr.addColorStop(0,'#08122b');gr.addColorStop(1,'#14306a');X.fillStyle=gr;X.fillRect(0,0,W,H);
  X.strokeStyle='#ffffff08';X.lineWidth=1;for(let x=0;x<W;x+=60){X.beginPath();X.moveTo(x,0);X.lineTo(x,G);X.stroke()}
  rack.forEach((b,i)=>{X.fillStyle='#ffffff0c';X.beginPath();X.roundRect(b.x,G-b.h,48,b.h,5);X.fill();
   for(let k=0;k<b.h/18-1;k++){X.fillStyle=(i+k)%3?'#6aa8ff33':'#ffb34744';X.fillRect(b.x+8,G-b.h+10+k*18,6,3)}});
  X.fillStyle='#0f2350';X.fillRect(0,G,W,H-G);
  X.fillStyle='#6aa8ff';X.shadowColor='#6aa8ff';X.shadowBlur=14;X.fillRect(0,G,W,2);X.shadowBlur=0;
+ }
  stack(30,'#3b82f6');stack(W-30,'#ff5fa2');
  g.u.forEach(drawU);
  g.fx.forEach(f=>{
@@ -188,12 +190,6 @@ function bars(id,rows){
 }
 function csvT(){return 'detik,insight,hp_server_persen,hp_portal_persen,robot_aktif,musuh_aktif\n'+g.log.map(r=>r.join(',')).join('\n')}
 function csvE(){return 'detik,jenis,nama,nilai\n'+g.ev.map(r=>r.join(',')).join('\n')}
-function cp(txt,b){
- const ta=document.getElementById('csv');ta.value=txt;ta.select();
- const ok=()=>{b.textContent='Tersalin ✓'};
- if(navigator.clipboard)navigator.clipboard.writeText(txt).then(ok,()=>{try{document.execCommand('copy');ok()}catch(e){}});
- else try{document.execCommand('copy');ok()}catch(e){}
-}
 function dash(){
  const s=g.st,kills=Object.values(s.k).reduce((a,b)=>a+b,0),dep=Object.values(s.d).reduce((a,b)=>a+b,0);
  const top=Object.keys(s.d).sort((a,b)=>s.d[b]-s.d[a])[0];
@@ -204,28 +200,24 @@ function dash(){
  line('c2',[{name:'Insight',col:'#ffb347',pts:g.log.map(r=>[r[0],r[1]])}],0,1);
  bars('c3',Object.keys(s.k).map(k=>({n:E[k].n,v:s.k[k],col:E[k].col})));
  bars('c4',Object.keys(s.d).map(k=>({n:T[k].n.split(' ')[0],v:s.d[k],col:T[k].col})));
- document.getElementById('b1').textContent='Salin timeline.csv';document.getElementById('b2').textContent='Salin kejadian.csv';
- document.getElementById('csv').value=csvT();
- const d=document.getElementById('dash');d.style.display='block';d.scrollTop=0;document.body.style.overflow='hidden';showTableau();
+  const d=document.getElementById('dash');d.style.display='block';d.scrollTop=0;document.body.style.overflow='hidden';showTableau();
 }
 /* ---------- Tableau Public ---------- */
 const TABLEAU_URL='https://public.tableau.com/views/ServerSweepers/Dashboard1'; // isi dengan alamat dashboard Tableau Public, mis. https://public.tableau.com/views/NamaWorkbook/NamaDashboard
 function showTableau(){
  if(!TABLEAU_URL)return;
  if(!document.getElementById('tbs')){const sc=document.createElement('script');sc.id='tbs';sc.type='module';sc.src='https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js';document.head.appendChild(sc)}
- const s=g.st,L=i=>g.log.map(r=>r[i]).join(',');
+ const s=g.st,L=i=>g.log.map(r=>String(Math.min(999,Math.max(0,Math.round(r[i])))).padStart(3,'0')).join('');
  const P={p_hasil:g.win?'Menang':'Kalah',p_durasi:Math.round(g.t),p_kutu:s.k.kutu,p_spam:s.k.spam,p_glitch:s.k.glitch,p_sapu:s.d.sapu,p_tameng:s.d.tameng,p_drone:s.d.drone,p_insight_musuh:s.kIns,p_insight_terpakai:s.spent,p_hp_server:L(2),p_hp_portal:L(3),p_insight:L(1)};
  const v=document.createElement('tableau-viz');
  v.setAttribute('src',TABLEAU_URL);v.setAttribute('hide-tabs','');v.setAttribute('toolbar','hidden');
- v.style.width='100%';v.style.height='780px';
+ v.style.width='100%';v.style.height='880px';
  for(const k in P){const q=document.createElement('viz-parameter');q.setAttribute('name',k);q.setAttribute('value',P[k]);v.appendChild(q)}
  v.addEventListener('firstinteractive',()=>{document.getElementById('bi').style.display='none'});
  document.getElementById('tv').appendChild(v);
 }
 function closeDash(){document.getElementById('dash').style.display='none';document.body.style.overflow='';document.getElementById('post').style.display='flex'}
 function openDash(){document.getElementById('post').style.display='none';if(!g.shown){g.shown=1;dash();return}const d=document.getElementById('dash');d.style.display='block';d.scrollTop=0;document.body.style.overflow='hidden'}
-document.getElementById('b1').onclick=e=>cp(csvT(),e.target);
-document.getElementById('b2').onclick=e=>cp(csvE(),e.target);
 /* ---------- kontrol ---------- */
 const bar_=document.getElementById('bar'),btn={};
 function mk(id,html,cls,fn){const b=document.createElement('button');b.innerHTML=html;if(cls)b.className=cls;b.onclick=fn;bar_.appendChild(b);btn[id]=b}
