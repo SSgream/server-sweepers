@@ -27,8 +27,8 @@ button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
 #dash{display:none;position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;z-index:50;overflow:hidden;background:var(--bg);padding:0}
 #dash>.row{position:absolute;top:0;left:0;right:0;height:76px;z-index:100;display:flex;align-items:center;justify-content:flex-end;margin:0!important;padding:0 18px;background:transparent!important;pointer-events:none}
 #dash>.row button{pointer-events:auto;box-shadow:0 2px 10px #0f234733}
-#dash #tv{position:absolute;inset:0;width:100%;height:100%;max-width:none;margin:0;overflow:hidden;display:block}
-#tv tableau-viz{position:absolute;left:50%;top:50%;display:block;width:1000px!important;height:930px!important;max-width:none!important;transform-origin:center center}
+#dash #tv{position:absolute;top:0;left:0;right:0;width:100%;height:100%;max-width:none;margin:0;overflow:auto;display:block}
+#tv tableau-viz{display:block;width:1000px!important;height:930px!important;max-width:none!important;margin:0 auto;transform-origin:top center}
 #bi{display:none}
 #tv{overflow:hidden}
 .tiles,.grid{display:grid;gap:10px;margin-bottom:10px}
@@ -211,13 +211,13 @@ function showTableau(){
  const P={p_hasil:g.win?'Menang':'Kalah',p_durasi:Math.round(g.t),p_kutu:s.k.kutu,p_spam:s.k.spam,p_glitch:s.k.glitch,p_sapu:s.d.sapu,p_tameng:s.d.tameng,p_drone:s.d.drone,p_insight_musuh:s.kIns,p_insight_terpakai:s.spent,p_hp_server:L(2),p_hp_portal:L(3),p_insight:L(1)};
  const v=document.createElement('tableau-viz');
  v.setAttribute('src',TABLEAU_URL);v.setAttribute('hide-tabs','');v.setAttribute('toolbar','hidden');
- v.style.width='100vw';v.style.height='100dvh';v.style.display='block';v.style.transform='none';v.style.transformOrigin='top left';
+ v.style.width='1000px';v.style.height='930px';v.style.display='block';v.style.transformOrigin='top center';
  for(const k in P){const q=document.createElement('viz-parameter');q.setAttribute('name',k);q.setAttribute('value',P[k]);v.appendChild(q)}
  v.addEventListener('firstinteractive',()=>{document.getElementById('bi').style.display='none'});
  document.getElementById('tv').appendChild(v);fitTv();
 }
 /* Tableau mengikuti ukuran viewport; tidak lagi memakai skala tetap 1000 x 930 px. */
-function fitTv(){const w=document.getElementById('tv'),v=w.firstElementChild;if(!v)return;const scale=Math.min(w.clientWidth/1000,w.clientHeight/930);v.style.width='1000px';v.style.height='930px';v.style.left='50%';v.style.top='50%';v.style.transform='translate(-50%,-50%) scale('+scale+')';}
+function fitTv(){const w=document.getElementById('tv'),v=w.firstElementChild;if(!v)return;const scale=Math.min(1,w.clientWidth/1000);v.style.width='1000px';v.style.height='930px';v.style.margin='0 auto';v.style.transformOrigin='top center';v.style.transform='scale('+scale+')';w.style.height=(930*scale)+'px';}
 addEventListener('resize',fitTv);
 function closeDash(){document.getElementById('dash').style.display='none';document.body.style.overflow='';document.getElementById('post').style.display='flex'}
 function openDash(){document.getElementById('post').style.display='none';if(!g.shown){g.shown=1;dash();return}const d=document.getElementById('dash');d.style.display='block';d.scrollTop=0;document.body.style.overflow='hidden';fitTv()}
