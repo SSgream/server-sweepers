@@ -24,11 +24,11 @@ button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
 #stage{position:relative}
 #post{position:absolute;left:0;right:0;top:60%;display:none;gap:10px;justify-content:center;flex-wrap:wrap;padding:0 12px}
 #post button{min-width:150px;padding:10px 16px}
-#dash{display:none;position:fixed;inset:0;z-index:50;overflow:auto;background:var(--bg);padding:calc(16px + env(safe-area-inset-top,0px)) 12px calc(24px + env(safe-area-inset-bottom,0px))}
-#dash>*{max-width:1200px;margin-left:auto;margin-right:auto}
-#tv{overflow:hidden}
-#dash h2{font-size:20px;margin:0 0 4px}
-#sum{margin:0 0 12px;font-size:14px;opacity:.85}
+#dash{display:none;position:fixed;inset:0;z-index:50;overflow:auto;background:var(--bg);padding:0}
+#dash>*{max-width:none;margin-left:0;margin-right:0}
+#dashControls{position:fixed;top:16px;right:20px;z-index:100;justify-content:flex-end;pointer-events:none}
+#dashControls button{pointer-events:auto;box-shadow:0 2px 10px #0002}
+#tv{width:100%;overflow:hidden;margin:0}
 .tiles,.grid{display:grid;gap:10px;margin-bottom:10px}
 .tiles{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
 .grid{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
