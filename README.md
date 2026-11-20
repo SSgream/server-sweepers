@@ -2,7 +2,9 @@
 
 Game pertahanan satu jalur berbasis browser yang hasil permainannya divisualisasikan secara otomatis ke **dashboard Tableau Public**. Repository ini berfokus pada **sistemnya**: bagaimana game, GitHub Pages, dan Tableau Public saling terhubung tanpa server sendiri.
 
-**Demo:** https://ssgream.github.io/server-sweepers/
+**Demo:** 
+- https://ssgream.github.io/server-sweepers/
+- https://public.tableau.com/app/profile/selwin.saputra/viz/ServerSweepers/Dashboard2?publish=yes
 
 ![Tangkapan layar](game.png)
 
