@@ -246,18 +246,6 @@ Untuk mengganti latar game: ubah `design/game-bg-template.svg` di Figma (jaga ka
 
 ---
 
-## Pemecahan masalah
-
-| Gejala | Penyebab dan solusi |
-| --- | --- |
-| GitHub Pages menampilkan 404 | File harus bernama `index.html`, Pages harus aktif, dan tunggu 1 sampai 2 menit. |
-| Yang muncul dashboard bawaan, bukan Tableau | `TABLEAU_URL` kosong atau salah, game tidak dibuka dari alamat sendiri, atau dashboard Tableau tidak bisa dibuka tanpa login. |
-| Angka di Tableau tidak berubah | Nama parameter tidak persis sama, atau Allowable values belum **All**. |
-| Grafik garis kosong atau satu titik | `Detik` belum menjadi Dimension, atau nilai awal parameter masih berformat koma. |
-| Latar game tidak berubah | `game-bg.png` tidak satu folder dengan `index.html`, atau browser masih menyimpan versi lama (`Ctrl+F5`). |
-| Dashboard tidak penuh selebar pop-up | Pastikan `index.html` versi terbaru sudah terunggah (ada fungsi `fitTv`). |
-
----
 
 ## Privasi
 
@@ -267,8 +255,7 @@ Untuk mengganti latar game: ubah `design/game-bg-template.svg` di Figma (jaga ka
 
 ---
 
-## Kredit dan lisensi
+## Kredit
 
 - Konsep terinspirasi dari game *Data Defense* karya Jeb Besecker di Tableau Public. Karakter, kode, dan desain di sini dibuat ulang.
 - Kode dan aset dibuat dengan bantuan AI (Claude, Anthropic).
-- Lisensi: lihat [LICENSE](LICENSE).
