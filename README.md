@@ -8,8 +8,6 @@ Game pertahanan satu jalur berbasis browser yang hasil permainannya divisualisas
 
 ![Tangkapan layar](game.png)
 
-*(Tambahkan `screenshot.png`, atau hapus baris gambar di atas.)*
-
 ---
 
 ## Daftar isi
